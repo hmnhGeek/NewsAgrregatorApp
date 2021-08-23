@@ -1,8 +1,21 @@
 from fastapi import FastAPI
 import uvicorn
 from Utilities.thehindu import TheHindu
+from fastapi.middleware.cors import CORSMiddleware
 
 api = FastAPI()
+
+origins = [
+    "http://localhost:3001",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @api.get("/getheadlinesfor")
 def get_headlines_for(keyword: str, page: int):
