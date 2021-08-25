@@ -11,11 +11,13 @@ const NewsCard = props => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState(false);
     const [news, setNews] = useState(false);
+    const [newsImage, setNewsImage] = useState(null);
     
     const handleOpen = () => {
         axios.get(`http://127.0.0.1:8080/fullnews?link=${props.newslink}`).then(response => {
             setTitle(response.data.title);
             setNews(response.data.news);
+            setNewsImage(response.data.image);
             setOpen(true);
         }).catch(err => console.log(err));
       };
@@ -45,7 +47,7 @@ const NewsCard = props => {
                 <Button size="small" onClick={handleOpen}>Read More</Button>
             </CardActions>
         </Card>
-        <FullNewsModal open={open} handleClose={handleClose} title={title} news={news} />
+        <FullNewsModal open={open} handleClose={handleClose} title={title} news={news} newsImage={newsImage} />
         </>
     );
 }

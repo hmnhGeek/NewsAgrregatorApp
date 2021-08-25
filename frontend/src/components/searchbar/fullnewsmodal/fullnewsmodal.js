@@ -38,8 +38,10 @@ const FullNewsModal = props => {
             >
                 <Fade in={props.open}>
                     <div className={classes.paper}>
-                        <h2 id="transition-modal-title">{props.title}</h2>
-                        <p style={{fontSize: "20px"}} id="transition-modal-description">{props.news}</p>
+                        <h1 id="transition-modal-title" style={{fontFamily: "timesnewroman"}}>{props.title}</h1>
+                        {props.newsImage && <img style={{display: 'block', margin: '0 auto'}} src={props.newsImage} />}
+                        <br />
+                        <p style={{fontSize: "20px", fontFamily: 'timesnewroman', lineHeight: "1.5"}} id="transition-modal-description">{props.news}</p>
                     </div>
                 </Fade>
             </Modal>

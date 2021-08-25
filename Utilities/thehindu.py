@@ -12,6 +12,7 @@ class ShortNews(BaseModel):
 class FullNews(BaseModel):
     title: str
     news: str
+    image: str = None
 
 class TheHindu:
     def __init__(self):
@@ -42,5 +43,8 @@ class TheHindu:
         paragraphs = soup.find_all('p')
         news = ' '.join([p.text.replace('\n', '') for p in paragraphs])
         title = soup.find_all('h1', {'class': 'title'})[0].text.replace('\n', '')
-
-        return FullNews(title=title, news=news)
+        try: 
+            img = soup.find_all('source')[0]['srcset'] 
+        except IndexError: img = None
+        
+        return FullNews(title=title, news=news, image=img)
