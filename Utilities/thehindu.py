@@ -8,6 +8,7 @@ class ShortNews(BaseModel):
     link: str
     date: str
     news_source: str
+    thumbnail: str = None
 
 class FullNews(BaseModel):
     title: str
@@ -32,7 +33,14 @@ class TheHindu:
             date = div.find_all("span", {'class': 'dateline'})[0].text
             description = div.find_all('span', {'class': 'light-gray-color story-card-33-text hidden-xs'})[0].text.replace('\n', '')
             link = div.find_all("a", {'class': 'story-card75x1-text'})[0]['href']
-            result.append(ShortNews(headline=headline, date=date, description=description, link=link, news_source="The Hindu"))
+
+            try:
+                anchor = div.find_all('a', {'class': 'story-card-img focuspoint'})[0]
+                thumbnail = anchor.find('img')["data-src-template"]
+            except:
+                thumbnail = None
+
+            result.append(ShortNews(headline=headline, date=date, description=description, thumbnail=thumbnail, link=link, news_source="The Hindu"))
 
         return result
 
