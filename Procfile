@@ -1,1 +1,1 @@
-web: python api.py
+web: uvicorn api:api --host=0.0.0.0 --port=${PORT:-5000}
