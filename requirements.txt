@@ -12,6 +12,7 @@ async_exit_stack==1.0.1
 brotli==1.0.9
 cchardet==2.1.7
 contextvars==2.4
+uvicorn==0.13.3
 Cython==0.29.24
 cython==0.29.24
 docutils==0.17.1
