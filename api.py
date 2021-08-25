@@ -7,6 +7,7 @@ api = FastAPI()
 
 origins = [
     "http://localhost:3001",
+    "https://geekynewsapp.herokuapp.com/",
 ]
 
 api.add_middleware(
