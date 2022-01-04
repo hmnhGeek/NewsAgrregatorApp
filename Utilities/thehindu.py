@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 class ShortNews(BaseModel):
     headline: str
-    description: str
+    description: str = None
     link: str
     date: str
     news_source: str
@@ -56,3 +56,57 @@ class TheHindu:
         except IndexError: img = None
         
         return FullNews(title=title, news=news, image=img)
+
+    def get_opinions(self):
+
+        # GETTING OPINIONS
+        link = "https://www.thehindu.com/opinion/"
+        html_text = requests.get(link).content
+
+        soup = BeautifulSoup(html_text, 'html.parser')
+        anchors = soup.find_all("a", attrs={"class": "ES2-100x4-text1-heading"})
+        small_news = soup.find_all("span", attrs={"class": "ES2-100x4-text1-content mobilGrad"})
+
+        results = []
+        for i in range(len(anchors)):
+            results.append(
+                ShortNews(
+                    headline = anchors[i].string,
+                    description = small_news[i].string,
+                    link = anchors[i]['href'],
+                    news_source = "The Hindu",
+                    thumbnail = None,
+                    date = anchors[i]["title"]
+                )
+            )
+
+        # GETTING OPEDS
+        link = link + 'op-ed'
+        html_text = requests.get(link).content
+        soup = BeautifulSoup(html_text, 'html.parser')
+        anchors = soup.find_all("a", attrs={"class": "story1-3x100-heading"})
+        anchors = [i for i in anchors]
+
+        for i in soup.find_all("a", attrs={"class": "spc33x3-1story-content"}):
+            anchors.append(i)
+
+        for i in soup.find_all("p", attrs={"class": "story-card-33-heading"}):
+            anchors.append(i.find("a"))
+
+        for i in range(len(anchors)):
+            results.append(
+                ShortNews(
+                    headline = anchors[i].string,
+                    description = None,
+                    link = anchors[i]['href'],
+                    news_source = "The Hindu",
+                    thumbnail = None,
+                    date = anchors[i]["title"]
+                )
+            )
+
+        return results
+
+    def get_opinion(self, link):
+        return self.full_news(link)
+
